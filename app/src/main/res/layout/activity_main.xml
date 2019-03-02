@@ -29,6 +29,7 @@
                     android:id="@+id/redImageView"
                     android:layout_width="match_parent"
                     android:layout_height="285dp"
+                    android:clickable="true"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/red_button" />
 
@@ -36,6 +37,7 @@
                     android:id="@+id/greenImageView"
                     android:layout_width="match_parent"
                     android:layout_height="285dp"
+                    android:clickable="true"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/green_button" />
             </LinearLayout>
@@ -50,6 +52,7 @@
                     android:id="@+id/blueImageView"
                     android:layout_width="match_parent"
                     android:layout_height="285dp"
+                    android:clickable="true"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/blue_button" />
 
@@ -57,6 +60,7 @@
                     android:id="@+id/yellowImageView"
                     android:layout_width="match_parent"
                     android:layout_height="285dp"
+                    android:clickable="true"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/yellow_button" />
 
