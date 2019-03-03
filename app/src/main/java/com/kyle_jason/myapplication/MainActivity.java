@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ArrayList<Integer> sequence;
     private ImageView red;
@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView green;
     private ImageView yellow;
     private int index;
+    private boolean playersTurn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         green = findViewById(R.id.greenImageView);
         yellow = findViewById(R.id.yellowImageView);
         index = 0;
+        playersTurn = false;
 
         addMove();
         (new Handler()).postDelayed(new Runnable() {
@@ -38,16 +40,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 1500);
 
+        findViewById(R.id.redImageView).setOnClickListener(this);
+        findViewById(R.id.blueImageView).setOnClickListener(this);
+        findViewById(R.id.greenImageView).setOnClickListener(this);
+        findViewById(R.id.yellowImageView).setOnClickListener(this);
+
         findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addMove();
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showSequence();
-                    }
-                }, 1000);
+                showSequence();
             }
         });
     }
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 1000);
         } else {
+            playersTurn = true;
             enableBoard();
         }
     }
@@ -134,5 +136,37 @@ public class MainActivity extends AppCompatActivity {
     private void addMove() {
         sequence.add((int) (Math.random() * 4) + 1);
         Log.i("MOVE", sequence.toString());
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (playersTurn) {
+            checkMatch(view);
+        }
+    }
+
+    private void checkMatch(View view) {
+        if (sequence.get(index) == Integer.valueOf(view.getTag().toString())) {
+            Log.i("MOVE", "correct");
+            index++;
+            if (sequence.size() == index) {
+                Log.i("MOVE", "you beat the round");
+                index = 0;
+                playersTurn = false;
+                addMove();
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSequence();
+                    }
+                }, 1500);
+            }
+        } else {
+            Log.i("MOVE", "wrong");
+            Log.i("MOVE", "you lose");
+            index = 0;
+            playersTurn = false;
+            disableBoard();
+        }
     }
 }
