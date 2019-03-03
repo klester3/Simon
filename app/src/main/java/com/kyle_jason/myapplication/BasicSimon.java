@@ -1,9 +1,11 @@
 package com.kyle_jason.myapplication;
 
+import android.content.DialogInterface;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +15,7 @@ import java.util.HashSet;
 
 public class BasicSimon extends Simon implements View.OnClickListener {
 
-    private ImageView[] imageViews;
+    private View[] views;
 
     private ArrayList<Integer> sequence;
     private ImageView red;
@@ -30,6 +32,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     private int yellowSound;
     private int gameOver;
     private int success;
+    private Handler handler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,25 +48,21 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         playersTurn = false;
         soundsLoaded = new HashSet<>();
 
-        imageViews = new ImageView[]{red, blue, green, yellow};
-        for (int i = 0; i < imageViews.length; i++) {
-            imageViews[i].setOnClickListener(this);
+        views = new View[]{red, blue, green, yellow};
+        for (int i = 0; i < views.length; i++) {
+            views[i].setOnClickListener(this);
         }
 
-        addMove();
-        (new Handler()).postDelayed(new Runnable() {
+        disableBoard(views);
+        addMove(sequence);
+
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 showSequence();
             }
         }, 1500);
-
-        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //show game information
-            }
-        });
     }
 
     @Override
@@ -81,7 +80,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                if (status == 0) { // success
+                if (status == 0) {
                     soundsLoaded.add(sampleId);
                     Log.i("SOUND", "Sound loaded " + sampleId);
                 } else {
@@ -105,7 +104,6 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void showSequence() {
-        Simon.disableBoard(imageViews);
         if (sequence.get(index) == 1) {
             showRed();
         } else if (sequence.get(index) == 2) {
@@ -125,7 +123,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
             }, 1000);
         } else {
             playersTurn = true;
-            Simon.enableBoard(imageViews);
+            enableBoard(views);
             index = 0;
         }
     }
@@ -133,7 +131,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     private void showRed() {
         red.setImageResource(R.drawable.push_red);
         playSound(redSound);
-        (new Handler()).postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 red.setImageResource(R.drawable.red_button);
@@ -144,7 +142,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     private void showBlue() {
         blue.setImageResource(R.drawable.push_blue);
         playSound(blueSound);
-        (new Handler()).postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 blue.setImageResource(R.drawable.blue_button);
@@ -155,7 +153,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     private void showGreen() {
         green.setImageResource(R.drawable.push_green);
         playSound(greenSound);
-        (new Handler()).postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 green.setImageResource(R.drawable.green_button);
@@ -166,7 +164,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     private void showYellow() {
         yellow.setImageResource(R.drawable.push_yellow);
         playSound(yellowSound);
-        (new Handler()).postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 yellow.setImageResource(R.drawable.yellow_button);
@@ -174,16 +172,66 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         }, 400);
     }
 
-    private void addMove() {
-        sequence.add((int) (Math.random() * 4) + 1);
-        Log.i("MOVE", sequence.toString());
-    }
-
     @Override
     public void onClick(View view) {
         if (playersTurn) {
-            checkMatch(view);
+            if (checkMatch(view, sequence, index)) {
+                continueGame();
+            } else {
+                endGame();
+            }
             getSound(view);
+        }
+    }
+
+    private void endGame() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                playSound(gameOver);
+            }
+        }, 800);
+        index = 0;
+        playersTurn = false;
+        disableBoard(views);
+    }
+
+    private void gameOverDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        BasicSimon.super.onBackPressed();
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("You're such a loser!");
+        alertDialog.show();
+    }
+
+    private void continueGame() {
+        index++;
+        if (sequence.size() == index) {
+            Log.i("MOVE", "you beat the round");
+            (new Handler()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    playSound(success);
+                }
+            }, 500);
+            index = 0;
+            playersTurn = false;
+            disableBoard(views);
+            addMove(sequence);
+            (new Handler()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showSequence();
+                }
+            }, 2000);
         }
     }
 
@@ -199,43 +247,6 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         }
     }
 
-    private void checkMatch(View view) {
-        if (sequence.get(index) == Integer.valueOf(view.getTag().toString())) {
-            Log.i("MOVE", "correct");
-            index++;
-            if (sequence.size() == index) {
-                Log.i("MOVE", "you beat the round");
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        playSound(success);
-                    }
-                }, 500);
-                index = 0;
-                playersTurn = false;
-                addMove();
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showSequence();
-                    }
-                }, 2000);
-            }
-        } else {
-            Log.i("MOVE", "wrong");
-            Log.i("MOVE", "you lose");
-            (new Handler()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    playSound(gameOver);
-                }
-            }, 800);
-            index = 0;
-            playersTurn = false;
-            Simon.disableBoard(imageViews);
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -245,5 +256,6 @@ public class BasicSimon extends Simon implements View.OnClickListener {
 
             soundsLoaded.clear();
         }
+        handler.removeCallbacksAndMessages(null);
     }
 }

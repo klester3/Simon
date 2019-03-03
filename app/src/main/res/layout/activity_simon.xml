@@ -8,8 +8,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,6 +30,7 @@
                     android:id="@+id/redImageView"
                     android:layout_width="match_parent"
                     android:layout_height="285dp"
+                    android:layout_weight="1"
                     android:clickable="true"
                     android:scaleType="fitXY"
                     android:tag="1"
@@ -38,6 +40,7 @@
                     android:id="@+id/greenImageView"
                     android:layout_width="match_parent"
                     android:layout_height="285dp"
+                    android:layout_weight="1"
                     android:clickable="true"
                     android:scaleType="fitXY"
                     android:tag="3"
@@ -54,6 +57,7 @@
                     android:id="@+id/blueImageView"
                     android:layout_width="match_parent"
                     android:layout_height="285dp"
+                    android:layout_weight="1"
                     android:clickable="true"
                     android:scaleType="fitXY"
                     android:tag="2"
@@ -63,6 +67,7 @@
                     android:id="@+id/yellowImageView"
                     android:layout_width="match_parent"
                     android:layout_height="285dp"
+                    android:layout_weight="1"
                     android:clickable="true"
                     android:scaleType="fitXY"
                     android:tag="4"
@@ -71,11 +76,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Button" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
