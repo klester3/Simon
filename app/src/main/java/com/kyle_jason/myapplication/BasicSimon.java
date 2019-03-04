@@ -34,6 +34,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     private int gameOver;
     private int success;
     private Handler handler;
+    private boolean paused;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,16 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (paused) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showSequence();
+                }
+            }, 1000);
+            paused = !paused;
+        }
 
         //load all sounds
         AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
@@ -286,6 +297,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
             soundsLoaded.clear();
         }
         handler.removeCallbacksAndMessages(null);
+        paused = true;
     }
 
     @Override
