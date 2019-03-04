@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Simon extends AppCompatActivity {
 
     public static void disableBoard(View[] views) {
+        //disable entire game board
         for (int i = 0; i < views.length; i++) {
             views[i].setEnabled(false);
         }
@@ -16,6 +17,7 @@ public class Simon extends AppCompatActivity {
     }
 
     public static void enableBoard(View[] views) {
+        //enable entire game board
         for (int i = 0; i < views.length; i++) {
             views[i].setEnabled(true);
         }
@@ -23,11 +25,13 @@ public class Simon extends AppCompatActivity {
     }
 
     public static void addMove(ArrayList<Integer> sequence) {
+        //increase sequence
         sequence.add((int) (Math.random() * 4) + 1);
         Log.i("MOVE", sequence.toString());
     }
 
     public static boolean checkMatch(View view, ArrayList<Integer> sequence, int index) {
+        //checks if player made correct move
         if (sequence.get(index) == Integer.valueOf(view.getTag().toString())) {
             Log.i("MOVE", "correct");
             return true;

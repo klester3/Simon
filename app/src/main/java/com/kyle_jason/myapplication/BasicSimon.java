@@ -1,6 +1,7 @@
 package com.kyle_jason.myapplication;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         playersTurn = false;
         soundsLoaded = new HashSet<>();
 
+        //set onclick listener for image views
         views = new View[]{red, blue, green, yellow};
         for (int i = 0; i < views.length; i++) {
             views[i].setOnClickListener(this);
@@ -56,6 +58,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         disableBoard(views);
         addMove(sequence);
 
+        //begin game
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -69,6 +72,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
 
+        //load all sounds
         AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
         attrBuilder.setUsage(AudioAttributes.USAGE_GAME);
 
@@ -98,12 +102,14 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void playSound(int soundId) {
+        //play required sound
         if (soundsLoaded.contains(soundId)) {
             soundPool.play(soundId, 1.0f, 1.0f, 0, 0, 1.0f);
         }
     }
 
     private void showSequence() {
+        //display sequence to player
         if (sequence.get(index) == 1) {
             showRed();
         } else if (sequence.get(index) == 2) {
@@ -129,6 +135,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void showRed() {
+        //animates red during showsequence
         red.setImageResource(R.drawable.push_red);
         playSound(redSound);
         handler.postDelayed(new Runnable() {
@@ -140,6 +147,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void showBlue() {
+        //animates blue during showsequence
         blue.setImageResource(R.drawable.push_blue);
         playSound(blueSound);
         handler.postDelayed(new Runnable() {
@@ -151,6 +159,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void showGreen() {
+        //animates green during showsequence
         green.setImageResource(R.drawable.push_green);
         playSound(greenSound);
         handler.postDelayed(new Runnable() {
@@ -162,6 +171,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void showYellow() {
+        //animates yellow during showsequence
         yellow.setImageResource(R.drawable.push_yellow);
         playSound(yellowSound);
         handler.postDelayed(new Runnable() {
@@ -185,6 +195,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void endGame() {
+        //ends game because player is a loser
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -203,21 +214,33 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void gameOverDialog() {
+        //displays game over dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton("I Know :(",
+        builder.setPositiveButton("Quit",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         BasicSimon.super.onBackPressed();
                         dialog.dismiss();
                     }
                 });
+        builder.setNegativeButton("Lose Again",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        Intent intent = new Intent(getApplicationContext(), BasicSimon.class);
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }
+                });
         AlertDialog alertDialog = builder.create();
         alertDialog.setCancelable(false);
+        alertDialog.setTitle("Game Over");
         alertDialog.setMessage("You're such a loser!");
         alertDialog.show();
     }
 
     private void continueGame() {
+        //shows next step in sequence
         index++;
         if (sequence.size() == index) {
             Log.i("MOVE", "you beat the round");
@@ -241,6 +264,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void getSound(View view) {
+        //associates correct sound with item clicked
         if (view.getId() == R.id.redImageView) {
             playSound(redSound);
         } else if (view.getId() == R.id.blueImageView) {
@@ -266,6 +290,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
+        //displays quit dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton("Cancel",
                 new DialogInterface.OnClickListener() {
@@ -282,6 +307,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
                 });
         AlertDialog alertDialog = builder.create();
         alertDialog.setCancelable(false);
+        alertDialog.setTitle("Alert");
         alertDialog.setMessage("Do you want to quit?");
         alertDialog.show();
     }
