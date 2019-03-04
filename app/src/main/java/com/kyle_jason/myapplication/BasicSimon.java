@@ -188,6 +188,12 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                gameOverDialog();
+            }
+        }, 200);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
                 playSound(gameOver);
             }
         }, 800);
@@ -197,7 +203,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     }
 
     private void gameOverDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
