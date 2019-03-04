@@ -204,7 +204,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
 
     private void gameOverDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton("OK",
+        builder.setPositiveButton("I Know :(",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         BasicSimon.super.onBackPressed();
@@ -213,7 +213,6 @@ public class BasicSimon extends Simon implements View.OnClickListener {
                 });
         AlertDialog alertDialog = builder.create();
         alertDialog.setCancelable(false);
-        alertDialog.setTitle("Alert");
         alertDialog.setMessage("You're such a loser!");
         alertDialog.show();
     }
@@ -263,5 +262,27 @@ public class BasicSimon extends Simon implements View.OnClickListener {
             soundsLoaded.clear();
         }
         handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.setNegativeButton("Quit",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        BasicSimon.super.onBackPressed();
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage("Do you want to quit?");
+        alertDialog.show();
     }
 }
