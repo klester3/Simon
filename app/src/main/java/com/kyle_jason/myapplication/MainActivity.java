@@ -12,10 +12,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.basicButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.imageButton_basic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), BasicSimon.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.button_extreme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExtremeSimon.class);
                 startActivity(intent);
             }
         });
