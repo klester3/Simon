@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -67,6 +68,14 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
                 showSequence();
             }
         }, 1500);
+
+        //calls pressedAbout when pressed
+        findViewById(R.id.imageButton_about).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pressedAbout();
+            }
+        });
     }
 
     @Override
@@ -326,5 +335,16 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
         alertDialog.setTitle("Alert");
         alertDialog.setMessage("Do you want to quit?");
         alertDialog.show();
+    }
+
+    //displays dialog box that informs about the game
+    private void pressedAbout() {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.random_about_dialog, null);
+        AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
+        quitAlert.setView(alertLayout);
+        quitAlert.setCancelable(true);
+        final AlertDialog quitDialog = quitAlert.create();
+        quitDialog.show();
     }
 }
