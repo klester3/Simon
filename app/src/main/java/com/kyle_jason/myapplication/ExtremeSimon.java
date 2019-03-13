@@ -26,6 +26,7 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
     private ImageView yellow;
     private int index;
     private boolean playersTurn;
+    private boolean lockPlayButton = true;
     private SoundPool soundPool;
     private HashSet<Integer> soundsLoaded;
     private int redSound;
@@ -57,7 +58,7 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
             views[i].setOnClickListener(this);
         }
 
-        disableBoard(views);
+        /*disableBoard(views);
         addMove(sequence);
 
         //begin game
@@ -67,7 +68,7 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
             public void run() {
                 showSequence();
             }
-        }, 1500);
+        }, 1500);*/
 
         //calls pressedAbout when pressed
         findViewById(R.id.imageButton_about).setOnClickListener(new View.OnClickListener() {
@@ -76,6 +77,43 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
                 pressedAbout();
             }
         });
+
+        //play button
+        findViewById(R.id.imageButton_play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pressedPlay();
+            }
+        });
+    }
+
+    private void pressedPlay() {
+        if(lockPlayButton) {
+            disableBoard(views);
+            addMove(sequence);
+
+            //begin game
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showSequence();
+                }
+            }, 1500);
+
+            lockPlayButton = false;
+        }
+    }
+
+    //displays dialog box that informs about the game
+    private void pressedAbout() {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.random_about_dialog, null);
+        AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
+        quitAlert.setView(alertLayout);
+        quitAlert.setCancelable(true);
+        final AlertDialog quitDialog = quitAlert.create();
+        quitDialog.show();
     }
 
     @Override
@@ -337,14 +375,4 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
         alertDialog.show();
     }
 
-    //displays dialog box that informs about the game
-    private void pressedAbout() {
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.random_about_dialog, null);
-        AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
-        quitAlert.setView(alertLayout);
-        quitAlert.setCancelable(true);
-        final AlertDialog quitDialog = quitAlert.create();
-        quitDialog.show();
-    }
 }

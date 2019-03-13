@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -35,6 +36,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     private int success;
     private Handler handler;
     private boolean paused;
+    private boolean lockPlayButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,17 +58,50 @@ public class BasicSimon extends Simon implements View.OnClickListener {
             views[i].setOnClickListener(this);
         }
 
-        disableBoard(views);
-        addMove(sequence);
-
-        //begin game
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        //calls pressedAbout when pressed
+        findViewById(R.id.imageButton_about).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                showSequence();
+            public void onClick(View view) {
+                pressedAbout();
             }
-        }, 1500);
+        });
+
+        //play button
+        findViewById(R.id.imageButton_play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pressedPlay();
+            }
+        });
+    }
+
+    private void pressedPlay() {
+        if(lockPlayButton) {
+            disableBoard(views);
+            addMove(sequence);
+
+            //begin game
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showSequence();
+                }
+            }, 1500);
+
+            lockPlayButton = false;
+        }
+    }
+
+    //displays dialog box that informs about the game
+    private void pressedAbout() {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.random_about_dialog, null);
+        AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
+        quitAlert.setView(alertLayout);
+        quitAlert.setCancelable(true);
+        final AlertDialog quitDialog = quitAlert.create();
+        quitDialog.show();
     }
 
     @Override

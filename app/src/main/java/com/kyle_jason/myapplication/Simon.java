@@ -1,7 +1,9 @@
 package com.kyle_jason.myapplication;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -41,4 +43,5 @@ public class Simon extends AppCompatActivity {
             return false;
         }
     }
+
 }
