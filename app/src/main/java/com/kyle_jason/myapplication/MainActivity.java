@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.button_extreme).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.imageButton_extreme).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ExtremeSimon.class);

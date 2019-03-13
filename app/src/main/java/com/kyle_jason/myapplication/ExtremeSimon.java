@@ -238,7 +238,7 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
-                        Intent intent = new Intent(getApplicationContext(), BasicSimon.class);
+                        Intent intent = new Intent(getApplicationContext(), ExtremeSimon.class);
                         startActivity(intent);
                         dialog.dismiss();
                     }
