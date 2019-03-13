@@ -36,7 +36,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     private int success;
     private Handler handler;
     private boolean paused;
-    private boolean lockPlayButton;
+    private boolean lockPlayButton = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,7 +96,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     //displays dialog box that informs about the game
     private void pressedAbout() {
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.random_about_dialog, null);
+        View alertLayout = inflater.inflate(R.layout.basic_about_dialog, null);
         AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
         quitAlert.setView(alertLayout);
         quitAlert.setCancelable(true);
