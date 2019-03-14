@@ -58,8 +58,8 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
             views[i].setOnClickListener(this);
         }
 
-        /*disableBoard(views);
-        addMove(sequence);
+        disableBoard(views);
+        /*addMove(sequence);
 
         //begin game
         handler = new Handler();
@@ -347,7 +347,9 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
 
             soundsLoaded.clear();
         }
-        handler.removeCallbacksAndMessages(null);
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
         paused = true;
     }
 
