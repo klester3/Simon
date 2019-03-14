@@ -51,12 +51,25 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         index = 0;
         playersTurn = false;
         soundsLoaded = new HashSet<>();
+        lockPlayButton = true;
 
         //set onclick listener for image views
         views = new View[]{red, blue, green, yellow};
         for (int i = 0; i < views.length; i++) {
             views[i].setOnClickListener(this);
         }
+
+        disableBoard(views);
+        /*addMove(sequence);
+
+        //begin game
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showSequence();
+            }
+        }, 1500);*/
 
         //calls pressedAbout when pressed
         findViewById(R.id.imageButton_about).setOnClickListener(new View.OnClickListener() {
@@ -331,7 +344,9 @@ public class BasicSimon extends Simon implements View.OnClickListener {
 
             soundsLoaded.clear();
         }
-        handler.removeCallbacksAndMessages(null);
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
         paused = true;
     }
 
