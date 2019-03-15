@@ -59,16 +59,6 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
         }
 
         disableBoard(views);
-        /*addMove(sequence);
-
-        //begin game
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showSequence();
-            }
-        }, 1500);*/
 
         //calls pressedAbout when pressed
         findViewById(R.id.imageButton_about).setOnClickListener(new View.OnClickListener() {

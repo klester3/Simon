@@ -99,7 +99,7 @@ public class CatSimon extends Simon implements View.OnClickListener {
     //displays dialog box that informs about the game
     private void pressedAbout() {
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.basic_about_dialog, null);
+        View alertLayout = inflater.inflate(R.layout.cat_about_dialog, null);
         AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
         quitAlert.setView(alertLayout);
         quitAlert.setCancelable(true);
