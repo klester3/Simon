@@ -7,10 +7,12 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,6 +39,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
     private Handler handler;
     private boolean paused;
     private boolean lockPlayButton = true;
+    private int highScore;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         playersTurn = false;
         soundsLoaded = new HashSet<>();
         lockPlayButton = true;
+        highScore = getHighScore("basic");
 
         //set onclick listener for image views
         views = new View[]{red, blue, green, yellow};
@@ -105,6 +109,9 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         quitAlert.setCancelable(true);
         final AlertDialog quitDialog = quitAlert.create();
         quitDialog.show();
+        TextView scoreTextView = quitDialog.findViewById(R.id.scoreTextView);
+        scoreTextView.setText(Html.fromHtml("<font color='#000'><b>High Score: </b>"
+                + Integer.valueOf(highScore) + "</font>"));
     }
 
     @Override
@@ -293,6 +300,9 @@ public class BasicSimon extends Simon implements View.OnClickListener {
         index++;
         if (sequence.size() == index) {
             Log.i("MOVE", "you beat the round");
+            if (sequence.size() > highScore) {
+                saveHighScores("basic", sequence.size());
+            }
             (new Handler()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
