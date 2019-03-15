@@ -1,8 +1,10 @@
 package com.kyle_jason.myapplication;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,5 +29,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.imageButton_credit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pressedCredit();
+            }
+        });
+    }
+
+    private void pressedCredit() {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.credit_dialog, null);
+        AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
+        quitAlert.setView(alertLayout);
+        quitAlert.setCancelable(true);
+        final AlertDialog quitDialog = quitAlert.create();
+        quitDialog.show();
     }
 }
