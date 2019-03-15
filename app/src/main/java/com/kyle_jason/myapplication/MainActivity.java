@@ -30,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.imageButton_cat).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CatSimon.class);
+                startActivity(intent);
+            }
+        });
+
         findViewById(R.id.imageButton_credit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
