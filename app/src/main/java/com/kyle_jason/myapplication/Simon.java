@@ -2,11 +2,20 @@ package com.kyle_jason.myapplication;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.SoundPool;
+import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Simon extends AppCompatActivity {
 
@@ -75,12 +84,94 @@ public class Simon extends AppCompatActivity {
             editor.putInt("catHighScore", catHighScore);
             editor.putInt("basicHighScore", score);
             editor.putInt("extremeHighScore", extremeHighScore);
-        } else if (key.equals("basic")) {
+        } else if (key.equals("extreme")) {
             editor.putInt("catHighScore", catHighScore);
             editor.putInt("basicHighScore", basicHighScore);
             editor.putInt("extremeHighScore", score);
         }
         editor.apply();
+    }
+
+    //displays dialog box that informs about the game
+    public void pressedAbout(int highScore, int id) {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(id, null);
+        AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
+        quitAlert.setView(alertLayout);
+        quitAlert.setCancelable(true);
+        final AlertDialog quitDialog = quitAlert.create();
+        quitDialog.show();
+        TextView scoreTextView = quitDialog.findViewById(R.id.scoreTextView);
+        scoreTextView.setText(Html.fromHtml("<font color='#000'><b>High Score: </b>"
+                + Integer.valueOf(highScore) + "</font>"));
+    }
+
+    public void showRed(final ImageView red, int redSound, Handler handler, HashSet soundsLoaded, SoundPool soundPool, int idPush, final int idButton) {
+        //animates red during showsequence
+        red.setImageResource(idPush);
+        playSound(redSound, soundsLoaded,soundPool);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                red.setImageResource(idButton);
+            }
+        }, 400);
+    }
+
+    public void showBlue(final ImageView blue, int blueSound, Handler handler, HashSet soundsLoaded, SoundPool soundPool, int idPush, final int idButton) {
+        //animates blue during showsequence
+        blue.setImageResource(idPush);
+        playSound(blueSound,soundsLoaded,soundPool);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                blue.setImageResource(idButton);
+            }
+        }, 400);
+    }
+
+    public void showGreen(final ImageView green, int greenSound, Handler handler, HashSet soundsLoaded, SoundPool soundPool, int idPush, final int idButton) {
+        //animates green during showsequence
+        green.setImageResource(idPush);
+        playSound(greenSound,soundsLoaded,soundPool);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                green.setImageResource(idButton);
+            }
+        }, 400);
+    }
+
+    public void showYellow(final ImageView yellow, int yellowSound, Handler handler, HashSet soundsLoaded, SoundPool soundPool, int idPush, final int idButton) {
+        //animates yellow during showsequence
+        yellow.setImageResource(idPush);
+        playSound(yellowSound,soundsLoaded,soundPool);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                yellow.setImageResource(idButton);
+            }
+        }, 400);
+    }
+
+    public void playSound(int soundId, HashSet soundsLoaded,SoundPool soundPool) {
+        //play required sound
+        if (soundsLoaded.contains(soundId)) {
+            soundPool.play(soundId, 1.0f, 1.0f, 0, 0, 1.0f);
+        }
+    }
+
+    public void simonOnPause(HashSet soundsLoaded,SoundPool soundPool, Handler handler, boolean paused){
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
+
+            soundsLoaded.clear();
+        }
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
+        paused = true;
     }
 
 }

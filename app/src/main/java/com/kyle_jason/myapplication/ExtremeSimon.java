@@ -68,7 +68,7 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
         findViewById(R.id.imageButton_about).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pressedAbout();
+                pressedAbout(highScore,R.layout.extreme_about_dialog);
             }
         });
 
@@ -97,20 +97,6 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
 
             lockPlayButton = false;
         }
-    }
-
-    //displays dialog box that informs about the game
-    private void pressedAbout() {
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.extreme_about_dialog, null);
-        AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
-        quitAlert.setView(alertLayout);
-        quitAlert.setCancelable(true);
-        final AlertDialog quitDialog = quitAlert.create();
-        quitDialog.show();
-        TextView scoreTextView = quitDialog.findViewById(R.id.scoreTextView);
-        scoreTextView.setText(Html.fromHtml("<font color='#000'><b>High Score: </b>"
-                + Integer.valueOf(highScore) + "</font>"));
     }
 
     @Override
@@ -156,23 +142,16 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
         success = soundPool.load(this, R.raw.success, 1);
     }
 
-    private void playSound(int soundId) {
-        //play required sound
-        if (soundsLoaded.contains(soundId)) {
-            soundPool.play(soundId, 1.0f, 1.0f, 0, 0, 1.0f);
-        }
-    }
-
     private void showSequence() {
         //display sequence to player
         if (sequence.get(index) == 1) {
-            showRed();
+            showRed(red,redSound,handler,soundsLoaded,soundPool,R.drawable.push_red,R.drawable.red_button);
         } else if (sequence.get(index) == 2) {
-            showBlue();
+            showBlue(blue,blueSound,handler,soundsLoaded,soundPool,R.drawable.push_blue,R.drawable.blue_button);
         } else if (sequence.get(index) == 3) {
-            showGreen();
+            showGreen(green,greenSound,handler,soundsLoaded,soundPool,R.drawable.push_green,R.drawable.green_button);
         } else if (sequence.get(index) == 4) {
-            showYellow();
+            showYellow(yellow,yellowSound,handler,soundsLoaded,soundPool,R.drawable.push_yellow,R.drawable.yellow_button);
         }
         index++;
         if (index < sequence.size()) {
@@ -187,54 +166,6 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
             enableBoard(views);
             index = 0;
         }
-    }
-
-    private void showRed() {
-        //animates red during showsequence
-        red.setImageResource(R.drawable.push_red);
-        playSound(redSound);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                red.setImageResource(R.drawable.red_button);
-            }
-        }, 400);
-    }
-
-    private void showBlue() {
-        //animates blue during showsequence
-        blue.setImageResource(R.drawable.push_blue);
-        playSound(blueSound);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                blue.setImageResource(R.drawable.blue_button);
-            }
-        }, 400);
-    }
-
-    private void showGreen() {
-        //animates green during showsequence
-        green.setImageResource(R.drawable.push_green);
-        playSound(greenSound);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                green.setImageResource(R.drawable.green_button);
-            }
-        }, 400);
-    }
-
-    private void showYellow() {
-        //animates yellow during showsequence
-        yellow.setImageResource(R.drawable.push_yellow);
-        playSound(yellowSound);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                yellow.setImageResource(R.drawable.yellow_button);
-            }
-        }, 400);
     }
 
     @Override
@@ -260,7 +191,7 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                playSound(gameOver);
+                playSound(gameOver,soundsLoaded,soundPool);
             }
         }, 800);
         index = 0;
@@ -305,7 +236,7 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
             (new Handler()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    playSound(success);
+                    playSound(success,soundsLoaded,soundPool);
                 }
             }, 500);
             index = 0;
@@ -328,29 +259,20 @@ public class ExtremeSimon extends Simon implements View.OnClickListener {
     private void getSound(View view) {
         //associates correct sound with item clicked
         if (view.getId() == R.id.redImageView) {
-            playSound(redSound);
+            playSound(redSound,soundsLoaded,soundPool);
         } else if (view.getId() == R.id.blueImageView) {
-            playSound(blueSound);
+            playSound(blueSound,soundsLoaded,soundPool);
         } else if (view.getId() == R.id.greenImageView) {
-            playSound(greenSound);
+            playSound(greenSound,soundsLoaded,soundPool);
         } else if (view.getId() == R.id.yellowImageView) {
-            playSound(yellowSound);
+            playSound(yellowSound,soundsLoaded,soundPool);
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (soundPool != null) {
-            soundPool.release();
-            soundPool = null;
-
-            soundsLoaded.clear();
-        }
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
-        }
-        paused = true;
+        simonOnPause(soundsLoaded,soundPool,handler,paused);
     }
 
     @Override

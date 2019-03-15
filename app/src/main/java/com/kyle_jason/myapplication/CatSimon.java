@@ -66,7 +66,7 @@ public class CatSimon extends Simon implements View.OnClickListener {
         findViewById(R.id.imageButton_about).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pressedAbout();
+                pressedAbout(highScore,R.layout.cat_about_dialog);
             }
         });
 
@@ -95,20 +95,6 @@ public class CatSimon extends Simon implements View.OnClickListener {
 
             lockPlayButton = false;
         }
-    }
-
-    //displays dialog box that informs about the game
-    private void pressedAbout() {
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.cat_about_dialog, null);
-        AlertDialog.Builder quitAlert = new AlertDialog.Builder(this);
-        quitAlert.setView(alertLayout);
-        quitAlert.setCancelable(true);
-        final AlertDialog quitDialog = quitAlert.create();
-        quitDialog.show();
-        TextView scoreTextView = quitDialog.findViewById(R.id.scoreTextView);
-        scoreTextView.setText(Html.fromHtml("<font color='#000'><b>High Score: </b>"
-                + Integer.valueOf(highScore) + "</font>"));
     }
 
     @Override
@@ -161,13 +147,13 @@ public class CatSimon extends Simon implements View.OnClickListener {
     private void showSequence() {
         //display sequence to player
         if (sequence.get(index) == 1) {
-            showRed();
+            showRed(red,yellowSound,handler,soundsLoaded,soundPool,R.drawable.redcatmeow,R.drawable.red_cat_button);
         } else if (sequence.get(index) == 2) {
-            showBlue();
+            showBlue(blue,yellowSound,handler,soundsLoaded,soundPool,R.drawable.bluecatmeow,R.drawable.blue_cat_button);
         } else if (sequence.get(index) == 3) {
-            showGreen();
+            showGreen(green,yellowSound,handler,soundsLoaded,soundPool,R.drawable.greencatmeow,R.drawable.green_cat_button);
         } else if (sequence.get(index) == 4) {
-            showYellow();
+            showYellow(yellow,yellowSound,handler,soundsLoaded,soundPool,R.drawable.yellowcatmeow,R.drawable.yellow_cat_button);
         }
         index++;
         if (index < sequence.size()) {
@@ -182,54 +168,6 @@ public class CatSimon extends Simon implements View.OnClickListener {
             enableBoard(views);
             index = 0;
         }
-    }
-
-    private void showRed() {
-        //animates red during showsequence
-        red.setImageResource(R.drawable.redcatmeow);
-        playSound(yellowSound);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                red.setImageResource(R.drawable.red_cat_button);
-            }
-        }, 400);
-    }
-
-    private void showBlue() {
-        //animates blue during showsequence
-        blue.setImageResource(R.drawable.bluecatmeow);
-        playSound(yellowSound);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                blue.setImageResource(R.drawable.blue_cat_button);
-            }
-        }, 400);
-    }
-
-    private void showGreen() {
-        //animates green during showsequence
-        green.setImageResource(R.drawable.greencatmeow);
-        playSound(yellowSound);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                green.setImageResource(R.drawable.green_cat_button);
-            }
-        }, 400);
-    }
-
-    private void showYellow() {
-        //animates yellow during showsequence
-        yellow.setImageResource(R.drawable.yellowcatmeow);
-        playSound(yellowSound);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                yellow.setImageResource(R.drawable.yellow_cat_button);
-            }
-        }, 400);
     }
 
     @Override
@@ -319,16 +257,7 @@ public class CatSimon extends Simon implements View.OnClickListener {
     @Override
     protected void onPause() {
         super.onPause();
-        if (soundPool != null) {
-            soundPool.release();
-            soundPool = null;
-
-            soundsLoaded.clear();
-        }
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
-        }
-        paused = true;
+        simonOnPause(soundsLoaded,soundPool,handler,paused);
     }
 
     @Override
