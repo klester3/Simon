@@ -28,9 +28,6 @@ public class CatSimon extends Simon implements View.OnClickListener {
     private boolean playersTurn;
     private SoundPool soundPool;
     private HashSet<Integer> soundsLoaded;
-    private int redSound;
-    private int blueSound;
-    private int greenSound;
     private int yellowSound;
     private int gameOver;
     private int success;
@@ -142,9 +139,6 @@ public class CatSimon extends Simon implements View.OnClickListener {
             }
         });
 
-        redSound = soundPool.load(this, R.raw.red, 1);
-        blueSound = soundPool.load(this, R.raw.blue, 1);
-        greenSound = soundPool.load(this, R.raw.green, 1);
         yellowSound = soundPool.load(this, R.raw.yellow, 1);
         gameOver = soundPool.load(this, R.raw.gameoverer, 1);
         success = soundPool.load(this, R.raw.success, 1);
@@ -185,48 +179,48 @@ public class CatSimon extends Simon implements View.OnClickListener {
 
     private void showRed() {
         //animates red during showsequence
-        red.setImageResource(R.drawable.push_red);
-        playSound(redSound);
+        red.setImageResource(R.drawable.redcatmeow);
+        playSound(yellowSound);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                red.setImageResource(R.drawable.red_button);
+                red.setImageResource(R.drawable.red_cat_button);
             }
         }, 400);
     }
 
     private void showBlue() {
         //animates blue during showsequence
-        blue.setImageResource(R.drawable.push_blue);
-        playSound(blueSound);
+        blue.setImageResource(R.drawable.bluecatmeow);
+        playSound(yellowSound);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                blue.setImageResource(R.drawable.blue_button);
+                blue.setImageResource(R.drawable.blue_cat_button);
             }
         }, 400);
     }
 
     private void showGreen() {
         //animates green during showsequence
-        green.setImageResource(R.drawable.push_green);
-        playSound(greenSound);
+        green.setImageResource(R.drawable.greencatmeow);
+        playSound(yellowSound);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                green.setImageResource(R.drawable.green_button);
+                green.setImageResource(R.drawable.green_cat_button);
             }
         }, 400);
     }
 
     private void showYellow() {
         //animates yellow during showsequence
-        yellow.setImageResource(R.drawable.push_yellow);
+        yellow.setImageResource(R.drawable.yellowcatmeow);
         playSound(yellowSound);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                yellow.setImageResource(R.drawable.yellow_button);
+                yellow.setImageResource(R.drawable.yellow_cat_button);
             }
         }, 400);
     }
@@ -239,7 +233,7 @@ public class CatSimon extends Simon implements View.OnClickListener {
             } else {
                 endGame();
             }
-            getSound(view);
+            playSound(yellowSound);
         }
     }
 
@@ -309,19 +303,6 @@ public class CatSimon extends Simon implements View.OnClickListener {
                     showSequence();
                 }
             }, 2000);
-        }
-    }
-
-    private void getSound(View view) {
-        //associates correct sound with item clicked
-        if (view.getId() == R.id.redImageView) {
-            playSound(redSound);
-        } else if (view.getId() == R.id.blueImageView) {
-            playSound(blueSound);
-        } else if (view.getId() == R.id.greenImageView) {
-            playSound(greenSound);
-        } else if (view.getId() == R.id.yellowImageView) {
-            playSound(yellowSound);
         }
     }
 

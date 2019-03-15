@@ -32,9 +32,10 @@
                     android:layout_height="285dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:scaleType="fitXY"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="10dp"
                     android:tag="1"
-                    app:srcCompat="@drawable/red_button" />
+                    app:srcCompat="@drawable/red_cat_button" />
 
                 <ImageView
                     android:id="@+id/greenImageView"
@@ -42,9 +43,10 @@
                     android:layout_height="285dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:scaleType="fitXY"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="10dp"
                     android:tag="3"
-                    app:srcCompat="@drawable/green_button" />
+                    app:srcCompat="@drawable/green_cat_button" />
             </LinearLayout>
 
             <LinearLayout
@@ -59,9 +61,10 @@
                     android:layout_height="285dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:scaleType="fitXY"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="25dp"
                     android:tag="2"
-                    app:srcCompat="@drawable/blue_button" />
+                    app:srcCompat="@drawable/blue_cat_button" />
 
                 <ImageView
                     android:id="@+id/yellowImageView"
@@ -69,9 +72,10 @@
                     android:layout_height="285dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:scaleType="fitXY"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="25dp"
                     android:tag="4"
-                    app:srcCompat="@drawable/yellow_button" />
+                    app:srcCompat="@drawable/yellow_cat_button" />
 
             </LinearLayout>
         </LinearLayout>
